@@ -1,8 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Input from './input';
 import {List, ListItem} from 'material-ui/List';
 import Link from 'material-ui/svg-icons/content/link';
 import Cancel from 'material-ui/svg-icons/navigation/cancel';
+
+// let createHandlers = function(dispatch) {
+//     let onClick = function(node, data) {
+//         dispatch(actions.nodeClicked(data))
+//     };
+
+//     return {
+//         onClick,
+//         // other handlers
+//     };
+// }
 
 class Bookmarks extends React.Component {
 
@@ -23,6 +35,7 @@ class Bookmarks extends React.Component {
             }],
         };
         this.addItem = this.addItem.bind(this);
+        // this.handlers = createHandlers(this.props.dispatch);
     }
 
     removeItem(index) {
@@ -48,10 +61,10 @@ class Bookmarks extends React.Component {
         });
     }
 
-    addItem(url) {
+    addItem(item) {
         this.state.data.push({
-            name: 'test',
-            url: url,
+            name: item.name,
+            url: item.url,
         });
         this.setState({
             data: this.state.data,
@@ -71,4 +84,4 @@ class Bookmarks extends React.Component {
 
 }
 
-export default Bookmarks;
+export default connect()(Bookmarks);

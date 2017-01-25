@@ -1,27 +1,35 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
+import ValidUrl from 'valid-url';
+// import addItem from '../../actions';
 
 class Bookmarks extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            value: 'test'
+            value: '',
+            valid: true
         };
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleKeyPress(event) {
-        if(event.key === 'Enter') {
+        if(event.key === 'Enter' && this.state.valid) {
             // this.addItem(this.state.value);
-            this.props.onSubmit();
+            this.props.onSubmit({
+                url: this.state.value,
+                name: 'name'
+            });
         }
     }
 
     handleChange = (event) => {
+        const val = event.target.value;
         this.setState({
             value: event.target.value,
+            valid: val === '' ? true : ValidUrl.isWebUri(event.target.value)
         });
     };
 
@@ -32,6 +40,7 @@ class Bookmarks extends React.Component {
                     hintText=""
                     fullWidth
                     floatingLabelText="Add URL to Bookmarks"
+                    errorText={this.state.valid ? '' : 'URL is invalid'}
                     value={this.state.value}
                     onKeyPress={ this.handleKeyPress }
                     onChange={ this.handleChange }/>
