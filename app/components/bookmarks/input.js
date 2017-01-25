@@ -1,7 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import ValidUrl from 'valid-url';
-// import addItem from '../../actions';
+import { addItem } from '../../actions';
+
+const createHandlers = (dispatch) => {
+    const onClick = (data) => {
+        dispatch(addItem(data));
+    };
+
+    return {
+        onClick,
+        // other handlers
+    };
+};
 
 class Bookmarks extends React.Component {
 
@@ -13,15 +25,20 @@ class Bookmarks extends React.Component {
         };
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handlers = createHandlers(this.props.dispatch);
     }
 
     handleKeyPress(event) {
         if(event.key === 'Enter' && this.state.valid) {
             // this.addItem(this.state.value);
-            this.props.onSubmit({
+            this.handlers.onClick({
                 url: this.state.value,
                 name: 'name'
             });
+            // this.props.onSubmit({
+            //     url: this.state.value,
+            //     name: 'name'
+            // });
         }
     }
 
@@ -51,7 +68,8 @@ class Bookmarks extends React.Component {
 }
 
 Bookmarks.propTypes = {
-    onSubmit: React.PropTypes.func
+    onSubmit: React.PropTypes.func,
+    dispatch: React.PropTypes.func
 };
 
-export default Bookmarks;
+export default connect()(Bookmarks);
