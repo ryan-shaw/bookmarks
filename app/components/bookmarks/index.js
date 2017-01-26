@@ -3,16 +3,27 @@ import { connect } from 'react-redux';
 import Input from './input';
 import {List, ListItem} from 'material-ui/List';
 import Link from 'material-ui/svg-icons/content/link';
-// import Cancel from 'material-ui/svg-icons/navigation/cancel';
-import { addItem } from '../../actions';
+import Cancel from 'material-ui/svg-icons/navigation/cancel';
+import { addItem, removeItem } from '../../actions';
 
 const createHandlers = (dispatch) => {
     const onSubmit = (data) => {
         dispatch(addItem(data));
     };
 
+    const onRemove = (idx) => {
+        dispatch(removeItem(idx));
+    };
+
+    const openLink = (url) => {
+        const win = window.open(url, '_blank');
+        win.focus();
+    };
+
     return {
         onSubmit,
+        onRemove,
+        openLink
         // other handlers
     };
 };
@@ -68,10 +79,10 @@ class Bookmarks extends React.Component {
                         key={i}
                         primaryText={item.name}
                         secondaryText={item.url}
-                        // rightIcon={
-                        //     <Cancel onClick={this.removeItem.bind(this, i)}/>
-                        // }
-                        leftIcon={<Link/>}/>
+                        rightIcon={
+                            <Cancel onClick={this.handlers.onRemove.bind(this, i)}/>
+                        }
+                        leftIcon={<Link onClick={this.handlers.openLink.bind(this, item.url)}/>}/>
             );
         });
     }

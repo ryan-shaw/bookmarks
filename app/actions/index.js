@@ -6,3 +6,10 @@ export function addItem(item) {
         item
     };
 }
+
+export function removeItem(idx) {
+    return {
+        type: types.REMOVE_ITEM,
+        idx
+    };
+}

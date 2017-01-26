@@ -9,6 +9,10 @@ const item = (state, action) => {
                 name: action.item.name,
                 url: action.item.url
             };
+        case types.REMOVE_ITEM:
+            return {
+                idx: action.idx
+            };
         default:
             return state;
     }
@@ -21,6 +25,10 @@ const items = (state = [], action) => {
                 ...state,
                 item(undefined, action)
             ];
+        case types.REMOVE_ITEM:
+            return state.filter( (e, i) => {
+                return i !== action.idx;
+            });
         default:
             return state;
     }
