@@ -3,18 +3,33 @@ import { connect } from 'react-redux';
 import Input from './input';
 import {List, ListItem} from 'material-ui/List';
 import Link from 'material-ui/svg-icons/content/link';
-import Cancel from 'material-ui/svg-icons/navigation/cancel';
+// import Cancel from 'material-ui/svg-icons/navigation/cancel';
+import { addItem } from '../../actions';
 
-// let createHandlers = function(dispatch) {
-//     let onClick = function(node, data) {
-//         dispatch(actions.nodeClicked(data))
-//     };
+const createHandlers = (dispatch) => {
+    const onSubmit = (data) => {
+        dispatch(addItem(data));
+    };
 
+    return {
+        onSubmit,
+        // other handlers
+    };
+};
+
+
+const mapStateToProps = (state) => {
+    console.log(state);
+    return {
+        items: state.items
+    };
+};
+
+// const mapDispatchToProps = () => {
 //     return {
-//         onClick,
-//         // other handlers
+
 //     };
-// }
+// };
 
 class Bookmarks extends React.Component {
 
@@ -34,28 +49,28 @@ class Bookmarks extends React.Component {
                 name: 'Google'
             }],
         };
-        this.addItem = this.addItem.bind(this);
-        // this.handlers = createHandlers(this.props.dispatch);
+        // this.addItem = this.addItem.bind(this);
+        this.handlers = createHandlers(this.props.dispatch);
     }
 
-    removeItem(index) {
-        this.setState({
-            data: this.state.data.filter( (e, i) => {
-                return i !== index;
-            })
-        });
-    }
+    // removeItem(index) {
+    //     this.setState({
+    //         data: this.state.data.filter( (e, i) => {
+    //             return i !== index;
+    //         })
+    //     });
+    // }
 
     getItems() {
-        return this.state.data.map((item, i) => {
+        return this.props.items.map((item, i) => {
             return (
                 <ListItem
                         key={i}
                         primaryText={item.name}
                         secondaryText={item.url}
-                        rightIcon={
-                            <Cancel onClick={this.removeItem.bind(this, i)}/>
-                        }
+                        // rightIcon={
+                        //     <Cancel onClick={this.removeItem.bind(this, i)}/>
+                        // }
                         leftIcon={<Link/>}/>
             );
         });
@@ -74,7 +89,7 @@ class Bookmarks extends React.Component {
     render() {
         return (
             <div style={this.style.container}>
-                <Input onSubmit={this.addItem}/>
+                <Input onSubmit={this.handlers.onSubmit}/>
                 <List>
                     { this.getItems() }
                 </List>
@@ -84,4 +99,13 @@ class Bookmarks extends React.Component {
 
 }
 
-export default connect()(Bookmarks);
+Bookmarks.propTypes = {
+    items: React.PropTypes.array,
+    dispatch: React.PropTypes.func
+};
+
+
+export default connect(
+    mapStateToProps,
+    // mapDispatchToProps
+)(Bookmarks);
