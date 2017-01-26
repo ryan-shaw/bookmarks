@@ -7,10 +7,16 @@ import { AppContainer } from 'react-hot-loader';
 import configureStore from './store/configureStore';
 import Root from './containers/Root';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+// import localforage from 'localforage';
 
 injectTapEventPlugin();
 
-const store = configureStore();
+const store = configureStore(JSON.parse(localStorage.getItem('state') || '{}'));
+
+store.subscribe(() => {
+    localStorage.setItem('state', JSON.stringify(store.getState()));
+});
+
 const history = syncHistoryWithStore(browserHistory, store);
 
 render(

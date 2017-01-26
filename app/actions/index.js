@@ -7,6 +7,13 @@ export function addItem(item) {
     };
 }
 
+export function addItems(items) {
+    return {
+        type: types.ADD_ITEMS,
+        items
+    };
+}
+
 export function removeItem(idx) {
     return {
         type: types.REMOVE_ITEM,

@@ -25,6 +25,13 @@ const items = (state = [], action) => {
                 ...state,
                 item(undefined, action)
             ];
+        case types.ADD_ITEMS:
+            return action.map((i) => {
+                return {
+                    name: i.name,
+                    url: i.url
+                };
+            });
         case types.REMOVE_ITEM:
             return state.filter( (e, i) => {
                 return i !== action.idx;

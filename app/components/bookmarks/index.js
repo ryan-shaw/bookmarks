@@ -30,7 +30,6 @@ const createHandlers = (dispatch) => {
 
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         items: state.items
     };
@@ -54,23 +53,8 @@ class Bookmarks extends React.Component {
                 margin: '0 auto'
             }
         };
-        this.state = {
-            data: [{
-                url: 'http://google.com',
-                name: 'Google'
-            }],
-        };
-        // this.addItem = this.addItem.bind(this);
         this.handlers = createHandlers(this.props.dispatch);
     }
-
-    // removeItem(index) {
-    //     this.setState({
-    //         data: this.state.data.filter( (e, i) => {
-    //             return i !== index;
-    //         })
-    //     });
-    // }
 
     getItems() {
         return this.props.items.map((item, i) => {
@@ -84,16 +68,6 @@ class Bookmarks extends React.Component {
                         }
                         leftIcon={<Link onClick={this.handlers.openLink.bind(this, item.url)}/>}/>
             );
-        });
-    }
-
-    addItem(item) {
-        this.state.data.push({
-            name: item.name,
-            url: item.url,
-        });
-        this.setState({
-            data: this.state.data,
         });
     }
 
