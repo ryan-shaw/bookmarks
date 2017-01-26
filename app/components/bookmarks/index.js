@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import { connect } from 'react-redux';
 import Input from './input';
 import {List, ListItem} from 'material-ui/List';
@@ -15,6 +16,10 @@ const createHandlers = (dispatch) => {
         dispatch(removeItem(idx));
     };
 
+    const onUndo = () => {
+        dispatch(UndoActionCreators.undo());
+    };
+
     const openLink = (url) => {
         const win = window.open(url, '_blank');
         win.focus();
@@ -23,7 +28,8 @@ const createHandlers = (dispatch) => {
     return {
         onSubmit,
         onRemove,
-        openLink
+        openLink,
+        onUndo
         // other handlers
     };
 };
@@ -31,7 +37,7 @@ const createHandlers = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        items: state.items
+        items: state.items.present
     };
 };
 
@@ -74,6 +80,7 @@ class Bookmarks extends React.Component {
     render() {
         return (
             <div style={this.style.container}>
+                <button onClick={this.handlers.onUndo}>Undo</button>
                 <Input onSubmit={this.handlers.onSubmit}/>
                 <List>
                     { this.getItems() }
@@ -86,8 +93,12 @@ class Bookmarks extends React.Component {
 
 Bookmarks.propTypes = {
     items: React.PropTypes.array,
-    dispatch: React.PropTypes.func
+    dispatch: React.PropTypes.func,
 };
+
+// const mapDispatchToProps = (dispatch) => ({
+//     dispatch
+// });
 
 
 export default connect(

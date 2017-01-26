@@ -1,5 +1,6 @@
 import { routerReducer as routing } from 'react-router-redux';
 import { combineReducers } from 'redux';
+import undoable from 'redux-undo';
 import * as types from '../actions/types';
 
 const item = (state, action) => {
@@ -42,7 +43,7 @@ const items = (state = [], action) => {
 };
 
 const rootReducer = combineReducers({
-    items,
+    items: undoable(items),
     routing
 });
 
